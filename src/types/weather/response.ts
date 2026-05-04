@@ -1,4 +1,4 @@
-interface WeatherAPIResponse {
+export interface WeatherAPIResponse {
   latitude: number;
   longitude: number;
   generationtime_ms: number;
@@ -14,7 +14,7 @@ interface WeatherAPIResponse {
   daily: DailyForecast;
 }
 
-interface CurrentWeather {
+export interface CurrentWeather {
   time: string;
   interval: number;
   temperature_2m: number;
@@ -31,7 +31,7 @@ interface CurrentWeather {
   is_day: number;
 }
 
-interface CurrentWeatherUnits {
+export interface CurrentWeatherUnits {
   time: string;
   interval: string;
   temperature_2m: string;
@@ -48,7 +48,7 @@ interface CurrentWeatherUnits {
   is_day: string;
 }
 
-interface DailyForecast {
+export interface DailyForecast {
   time: string[];
   weather_code: number[];
   temperature_2m_max: number[];
@@ -62,7 +62,7 @@ interface DailyForecast {
   uv_index_max: number[];
 }
 
-interface DailyForecastUnits {
+export interface DailyForecastUnits {
   time: string;
   weather_code: string;
   temperature_2m_max: string;
@@ -76,7 +76,7 @@ interface DailyForecastUnits {
   uv_index_max: string;
 }
 
-interface HourlyForecast {
+export interface HourlyForecast {
   time: string[];
   temperature_2m: number[];
   weather_code: number[];
@@ -88,7 +88,7 @@ interface HourlyForecast {
   visibility: number[];
 }
 
-interface HourlyForecastUnits {
+export interface HourlyForecastUnits {
   time: string;
   temperature_2m: string;
   weather_code: string;

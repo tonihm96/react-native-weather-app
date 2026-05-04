@@ -1,19 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
-import { Text } from "react-native-paper";
+import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 
-import CurrentWeather from "@/features/forecast/components/CurrentWeather";
-import CurrentWeatherCard from "@/features/forecast/components/CurrentWeatherCard";
-import CurrentWeatherCardsContainer from "@/features/forecast/components/CurrentWeatherCardsContainer";
-import CurrentWeatherContainer from "@/features/forecast/components/CurrentWeatherContainer";
-import DailyForecast from "@/features/forecast/components/DailyForecast";
-import HourlyForecast from "@/features/forecast/components/HourlyForecast";
+import WeatherIcon from "@/components/WeatherIcon";
 import weatherQuery from "@/queries/weather";
+import { sizes } from "@/styles/sizes";
+import { Icon, Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const MOCK_COORDINATES = {
   latitude: -27.148023994688298,
   longitude: -51.48305952442542,
 };
+
+const MOCK_LOCATION_NAME = "Joaçaba";
 
 const ForecastScreen = () => {
   const {
@@ -22,9 +21,28 @@ const ForecastScreen = () => {
     isRefetching: isRefetchingWeather,
   } = useQuery(weatherQuery({ ...MOCK_COORDINATES }));
 
-  const onRefresh = () => {
-    refetchWeather();
-  };
+  const hourlyTimes = weather?.hourly.map((h) => h.time.getTime()) ?? [];
+  const dailyTimes = weather?.daily.map((d) => d.time.getTime()) ?? [];
+
+  const maxHourlyDate = Math.max(...hourlyTimes);
+  const minHourlyDate = Math.min(...hourlyTimes);
+
+  const maxDailyDate = Math.max(...dailyTimes);
+  const minDailyDate = Math.min(...dailyTimes);
+
+  const maxHourly = new Date(maxHourlyDate);
+  const minHourly = new Date(minHourlyDate);
+  const maxDaily = new Date(maxDailyDate);
+  const minDaily = new Date(minDailyDate);
+
+  console.log({
+    hourlyTimesLength: hourlyTimes.length,
+    dailyTimesLength: dailyTimes.length,
+    maxHourly,
+    minHourly,
+    maxDaily,
+    minDaily,
+  });
 
   return (
     <ScrollView
@@ -32,49 +50,93 @@ const ForecastScreen = () => {
       refreshControl={
         <RefreshControl
           refreshing={isRefetchingWeather}
-          onRefresh={onRefresh}
+          onRefresh={refetchWeather}
         />
       }
     >
-      <CurrentWeatherContainer>
-        <CurrentWeather
-          temperature={weather?.current?.temperature_2m}
-          temperatureUnit={weather?.current_units?.temperature_2m}
-          apparentTemperature={weather?.current?.apparent_temperature}
-          apparentTemperatureUnit={weather?.current_units?.apparent_temperature}
-        />
+      <SafeAreaView
+        style={{ flexDirection: "row", alignItems: "center", gap: sizes.xs }}
+      >
+        <Icon source="map-marker" size={sizes.lg} />
+        <Text>{MOCK_LOCATION_NAME}</Text>
+      </SafeAreaView>
 
-        <Text>
-          {weather?.current?.weather_code ?? 0}{" "}
-          {weather?.current_units?.weather_code ?? "code"}
-        </Text>
-      </CurrentWeatherContainer>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <View>
+          <Text variant="displayLarge">
+            {weather?.current.temperature_2m}
+            {weather?.current_units.temperature_2m}
+          </Text>
+          <Text variant="labelMedium">
+            {weather?.current.apparent_temperature}
+            {weather?.current_units.apparent_temperature}
+          </Text>
+        </View>
 
-      <CurrentWeatherCardsContainer>
-        <CurrentWeatherCard
-          label={`${weather?.current?.rain ?? 0} ${weather?.current_units?.rain ?? "mm"}`}
-        />
-        <CurrentWeatherCard
-          label={`${weather?.current?.wind_speed_10m ?? 0} ${weather?.current_units?.wind_speed_10m ?? "km/h"}`}
-        />
-        <CurrentWeatherCard
-          label={`${weather?.current?.cloud_cover ?? 0} ${weather?.current_units?.cloud_cover ?? "%"}`}
-        />
-      </CurrentWeatherCardsContainer>
+        <WeatherIcon code={weather?.current.weather_code!} size={sizes.xxxl} />
+      </View>
 
-      <ScrollView horizontal>
-        <HourlyForecast
-          forecast={weather?.hourly}
-          forecastUnits={weather?.hourly_units}
-        />
+      <ScrollView
+        horizontal
+        contentContainerStyle={{ gap: sizes.md }}
+        showsHorizontalScrollIndicator={false}
+      >
+        {weather?.hourly.map((h) => (
+          <View key={h.time.toISOString()}>
+            <Text>
+              {h.time.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
+            <WeatherIcon code={h.weather_code!} size={sizes.xl} />
+            <Text variant="bodyMedium">
+              {h.temperature_2m}
+              {weather?.hourly_units.temperature_2m}
+            </Text>
+            <Text variant="bodyMedium">
+              {h.precipitation_probability}
+              {weather?.hourly_units.precipitation_probability}
+            </Text>
+          </View>
+        ))}
       </ScrollView>
-
-      <ScrollView horizontal>
-        <DailyForecast
-          forecast={weather?.daily}
-          forecastUnits={weather?.daily_units}
-        />
-      </ScrollView>
+      {weather?.daily.map((d) => (
+        <View
+          key={d.time.toISOString()}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Text>
+            {d.time.toLocaleDateString([], {
+              weekday: "short",
+              day: "numeric",
+            })}
+          </Text>
+          <WeatherIcon code={d.weather_code!} size={sizes.xl} />
+          <Text variant="bodyMedium">
+            {d.precipitation_probability_max}
+            {weather?.daily_units.precipitation_probability_max}
+          </Text>
+          <Text variant="bodyMedium">
+            {d.temperature_2m_min}
+            {weather?.daily_units.temperature_2m_min}
+          </Text>
+          <Text variant="bodyMedium">
+            {d.temperature_2m_max}
+            {weather?.daily_units.temperature_2m_max}
+          </Text>
+        </View>
+      ))}
     </ScrollView>
   );
 };
@@ -82,7 +144,6 @@ const ForecastScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
 });
 

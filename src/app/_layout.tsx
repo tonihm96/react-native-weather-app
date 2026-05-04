@@ -1,17 +1,17 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { Suspense, useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 
-import useInit from "@/core/init";
+import { SettingsProvider } from "@/contexts/settings";
+import { useInit } from "@/core/init";
+import queryClient from "@/lib/query-client";
+import queryClientPersister from "@/lib/query-client-persister";
 import { darkTheme, lightTheme } from "@/styles/theme";
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
+export { ErrorBoundary } from "expo-router";
 
 // export const unstable_settings = {
 //   initialRouteName: "(tabs)",
@@ -19,11 +19,8 @@ export {
 
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient();
-
 const App = () => {
-  // suspense
-  useInit();
+  const { settings } = useInit();
 
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
@@ -33,16 +30,21 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister: queryClientPersister }}
+    >
       <PaperProvider theme={theme}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: theme.colors.background },
-          }}
-        />
+        <SettingsProvider init={settings}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: theme.colors.background },
+            }}
+          />
+        </SettingsProvider>
       </PaperProvider>
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 };
 

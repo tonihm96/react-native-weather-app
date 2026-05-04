@@ -1,16 +1,16 @@
-type TemperatureUnit = "celsius" | "fahrenheit";
+export type TemperatureUnit = "celsius" | "fahrenheit";
 
-type Timeformat = "unixtime" | "iso8601";
+export type Timeformat = "unixtime" | "iso8601";
 
-type WindSpeedUnit = "kmh" | "ms" | "mph" | "kn";
+export type WindSpeedUnit = "kmh" | "ms" | "mph" | "kn";
 
-type PrecipitationUnit = "mm" | "inch";
+export type PrecipitationUnit = "mm" | "inch";
 
-type CellSelection = "" | "sea" | "nearest";
+export type CellSelection = "" | "sea" | "nearest";
 
-type TemporalResolution = "" | "hourly_3" | "hourly_6" | "native";
+export type TemporalResolution = "" | "hourly_3" | "hourly_6" | "native";
 
-type Timezone =
+export type Timezone =
   //#region Timezones
   | "auto"
   | "UTC"
@@ -32,7 +32,7 @@ type Timezone =
   | "Pacific/Auckland";
 //#endregion
 
-type CurrentVariables =
+export type CurrentVariables =
   //#region Current weather variables
   | "temperature_2m"
   | "relative_humidity_2m"
@@ -51,72 +51,43 @@ type CurrentVariables =
   | "surface_pressure";
 //#endregion
 
-type DailyVariables =
-  //#region Daily variables
-  | "weather_code"
-  | "temperature_2m_max"
-  | "apparent_temperature_max"
-  | "temperature_2m_min"
-  | "wind_gusts_10m_max"
-  | "wind_speed_10m_max"
-  | "et0_fao_evapotranspiration"
-  | "shortwave_radiation_sum"
-  | "wind_direction_10m_dominant"
-  | "apparent_temperature_min"
-  | "uv_index_clear_sky_max"
-  | "uv_index_max"
+export type Minutely15Variables =
+  //#region Minutely 15 variables
+  | "temperature_2m"
+  | "relative_humidity_2m"
+  | "dew_point_2m"
+  | "apparent_temperature"
+  | "precipitation"
+  | "wind_gusts_10m"
+  | "visibility"
+  | "cape"
+  | "lightning_potential"
+  | "is_day"
+  | "shortwave_radiation"
+  | "direct_radiation"
+  | "diffuse_radiation"
+  | "direct_normal_irradiance"
+  | "global_tilted_irradiance"
+  | "terrestrial_radiation"
+  | "terrestrial_radiation_instant"
+  | "global_tilted_irradiance_instant"
+  | "direct_normal_irradiance_instant"
+  | "diffuse_radiation_instant"
+  | "direct_radiation_instant"
+  | "shortwave_radiation_instant"
   | "sunshine_duration"
-  | "daylight_duration"
-  | "sunset"
-  | "sunrise"
-  | "precipitation_probability_max"
-  | "precipitation_hours"
-  | "precipitation_sum"
-  | "snowfall_sum"
-  | "showers_sum"
-  | "rain_sum"
-  | "temperature_2m_mean"
-  | "apparent_temperature_mean"
-  | "cape_mean"
-  | "cape_max"
-  | "cloud_cover_mean"
-  | "cape_min"
-  | "cloud_cover_max"
-  | "cloud_cover_min"
-  | "dew_point_2m_mean"
-  | "dew_point_2m_max"
-  | "dew_point_2m_min"
-  | "wet_bulb_temperature_2m_mean"
-  | "wet_bulb_temperature_2m_max"
-  | "wet_bulb_temperature_2m_min"
-  | "vapour_pressure_deficit_max"
-  | "et0_fao_evapotranspiration_sum"
-  | "growing_degree_days_base_0_limit_50"
-  | "leaf_wetness_probability_mean"
-  | "precipitation_probability_mean"
-  | "precipitation_probability_min"
-  | "relative_humidity_2m_mean"
-  | "relative_humidity_2m_max"
-  | "relative_humidity_2m_min"
-  | "snowfall_water_equivalent_sum"
-  | "pressure_msl_mean"
-  | "pressure_msl_max"
-  | "pressure_msl_min"
-  | "surface_pressure_mean"
-  | "surface_pressure_max"
-  | "surface_pressure_min"
-  | "updraft_max"
-  | "visibility_min"
-  | "visibility_max"
-  | "winddirection_10m_dominant"
-  | "wind_gusts_10m_mean"
-  | "visibility_mean"
-  | "wind_speed_10m_mean"
-  | "wind_gusts_10m_min"
-  | "wind_speed_10m_min";
+  | "freezing_level_height"
+  | "snowfall_height"
+  | "snowfall"
+  | "rain"
+  | "weather_code"
+  | "wind_speed_10m"
+  | "wind_speed_80m"
+  | "wind_direction_10m"
+  | "wind_direction_80m";
 //#endregion
 
-type HourlyVariables =
+export type HourlyVariables =
   //#region Hourly variables
   | "total_column_integrated_water_vapour"
   | "wet_bulb_temperature_2m"
@@ -299,43 +270,72 @@ type HourlyVariables =
   | "geopotential_height_150hPa";
 //#endregion
 
-type Minutely15Variables =
-  //#region Minutely 15 variables
-  | "temperature_2m"
-  | "relative_humidity_2m"
-  | "dew_point_2m"
-  | "apparent_temperature"
-  | "precipitation"
-  | "wind_gusts_10m"
-  | "visibility"
-  | "cape"
-  | "lightning_potential"
-  | "is_day"
-  | "shortwave_radiation"
-  | "direct_radiation"
-  | "diffuse_radiation"
-  | "direct_normal_irradiance"
-  | "global_tilted_irradiance"
-  | "terrestrial_radiation"
-  | "terrestrial_radiation_instant"
-  | "global_tilted_irradiance_instant"
-  | "direct_normal_irradiance_instant"
-  | "diffuse_radiation_instant"
-  | "direct_radiation_instant"
-  | "shortwave_radiation_instant"
-  | "sunshine_duration"
-  | "freezing_level_height"
-  | "snowfall_height"
-  | "snowfall"
-  | "rain"
+export type DailyVariables =
+  //#region Daily variables
   | "weather_code"
-  | "wind_speed_10m"
-  | "wind_speed_80m"
-  | "wind_direction_10m"
-  | "wind_direction_80m";
+  | "temperature_2m_max"
+  | "apparent_temperature_max"
+  | "temperature_2m_min"
+  | "wind_gusts_10m_max"
+  | "wind_speed_10m_max"
+  | "et0_fao_evapotranspiration"
+  | "shortwave_radiation_sum"
+  | "wind_direction_10m_dominant"
+  | "apparent_temperature_min"
+  | "uv_index_clear_sky_max"
+  | "uv_index_max"
+  | "sunshine_duration"
+  | "daylight_duration"
+  | "sunset"
+  | "sunrise"
+  | "precipitation_probability_max"
+  | "precipitation_hours"
+  | "precipitation_sum"
+  | "snowfall_sum"
+  | "showers_sum"
+  | "rain_sum"
+  | "temperature_2m_mean"
+  | "apparent_temperature_mean"
+  | "cape_mean"
+  | "cape_max"
+  | "cloud_cover_mean"
+  | "cape_min"
+  | "cloud_cover_max"
+  | "cloud_cover_min"
+  | "dew_point_2m_mean"
+  | "dew_point_2m_max"
+  | "dew_point_2m_min"
+  | "wet_bulb_temperature_2m_mean"
+  | "wet_bulb_temperature_2m_max"
+  | "wet_bulb_temperature_2m_min"
+  | "vapour_pressure_deficit_max"
+  | "et0_fao_evapotranspiration_sum"
+  | "growing_degree_days_base_0_limit_50"
+  | "leaf_wetness_probability_mean"
+  | "precipitation_probability_mean"
+  | "precipitation_probability_min"
+  | "relative_humidity_2m_mean"
+  | "relative_humidity_2m_max"
+  | "relative_humidity_2m_min"
+  | "snowfall_water_equivalent_sum"
+  | "pressure_msl_mean"
+  | "pressure_msl_max"
+  | "pressure_msl_min"
+  | "surface_pressure_mean"
+  | "surface_pressure_max"
+  | "surface_pressure_min"
+  | "updraft_max"
+  | "visibility_min"
+  | "visibility_max"
+  | "winddirection_10m_dominant"
+  | "wind_gusts_10m_mean"
+  | "visibility_mean"
+  | "wind_speed_10m_mean"
+  | "wind_gusts_10m_min"
+  | "wind_speed_10m_min";
 //#endregion
 
-type WeatherModels =
+export type WeatherModels =
   //#region Weather models
   | "best_match"
   | "ecmwf_ifs"
@@ -389,12 +389,18 @@ type WeatherModels =
   | "geosphere_arome_austria";
 //#endregion
 
-interface WeatherAPIParams {
+export interface WeatherAPIParams {
   latitude: number;
   longitude: number;
   past_days?: number;
   hourly?: HourlyVariables[];
+  /**
+   * Maximum: 24
+   */
   forecast_hours?: number;
+  /**
+   * Maximum: 24
+   */
   past_hours?: number;
   temporal_resolution?: TemporalResolution;
   models?: WeatherModels[];
