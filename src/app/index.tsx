@@ -7,11 +7,6 @@ import { sizes } from "@/styles/sizes";
 import { Icon, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const MOCK_COORDINATES = {
-  latitude: -27.148023994688298,
-  longitude: -51.48305952442542,
-};
-
 const MOCK_LOCATION_NAME = "Joaçaba";
 
 const ForecastScreen = () => {
@@ -19,7 +14,7 @@ const ForecastScreen = () => {
     data: weather,
     refetch: refetchWeather,
     isRefetching: isRefetchingWeather,
-  } = useQuery(weatherQuery({ ...MOCK_COORDINATES }));
+  } = useQuery(weatherQuery());
 
   const hourlyTimes = weather?.hourly.map((h) => h.time.getTime()) ?? [];
   const dailyTimes = weather?.daily.map((d) => d.time.getTime()) ?? [];

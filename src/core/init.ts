@@ -14,11 +14,6 @@ import { loadStoredSettings } from "@/lib/settings";
 import weatherQuery from "@/queries/weather";
 import fonts from "@assets/fonts";
 
-const MOCK_COORDINATES = {
-  latitude: -27.148023994688298,
-  longitude: -51.48305952442542,
-};
-
 const init = async () => {
   setupOnlineManager();
   setupAppFocusManager();
@@ -36,7 +31,7 @@ const init = async () => {
       fallbackLng: settings.language,
       lng: settings.language,
     }),
-    queryClient.prefetchQuery(weatherQuery({ ...MOCK_COORDINATES })),
+    queryClient.prefetchQuery(weatherQuery()),
   ]);
 
   return { settings };

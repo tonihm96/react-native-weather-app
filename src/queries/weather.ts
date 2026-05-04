@@ -17,8 +17,8 @@ import {
 } from "@/types/weather/response";
 
 export interface WeatherQueryParams {
-  latitude: number;
-  longitude: number;
+  latitude?: number; // change to required prop later
+  longitude?: number; // change to required prop later
   timezone?: Timezone;
   temperature_unit?: TemperatureUnit;
   wind_speed_unit?: WindSpeedUnit;
@@ -97,15 +97,20 @@ const weatherQueryKey = (params: WeatherQueryParams) => {
   return ["forecast", params];
 };
 
-const weatherQuery = (params: WeatherQueryParams) => {
+const MOCK_COORDINATES = {
+  latitude: -27.148023994688298,
+  longitude: -51.48305952442542,
+};
+
+const weatherQuery = (params: WeatherQueryParams = {}) => {
   return queryOptions({
     queryKey: weatherQueryKey(params),
     queryFn: async () => {
       console.log("running main weather query");
 
       const {
-        latitude,
-        longitude,
+        latitude = MOCK_COORDINATES.latitude,
+        longitude = MOCK_COORDINATES.longitude,
         precipitation_unit = "mm",
         temperature_unit = "celsius",
         timeformat = "iso8601",
