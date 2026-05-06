@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import openMeteoApi from "@/services/open-meteo";
+import weatherApi from "@/services/weather";
 import {
   PrecipitationUnit,
   TemperatureUnit,
@@ -94,7 +94,7 @@ const parseDaily = (daily: DailyForecast) => {
 };
 
 const weatherQueryKey = (params: WeatherQueryParams) => {
-  return ["forecast", params];
+  return ["forecast", params] as const;
 };
 
 const MOCK_COORDINATES = {
@@ -102,7 +102,7 @@ const MOCK_COORDINATES = {
   longitude: -51.48305952442542,
 };
 
-const weatherQuery = (params: WeatherQueryParams = {}) => {
+export const weatherQuery = (params: WeatherQueryParams = {}) => {
   return queryOptions({
     queryKey: weatherQueryKey(params),
     queryFn: async () => {
@@ -171,7 +171,7 @@ const weatherQuery = (params: WeatherQueryParams = {}) => {
       // await new Promise((resolve) => setTimeout(resolve, 500));
 
       // return parseWeather(weatherMock);
-      const { data: weather } = await openMeteoApi.get<WeatherAPIResponse>(
+      const { data: weather } = await weatherApi.get<WeatherAPIResponse>(
         "/forecast",
         { params: weatherApiParams },
       );
@@ -180,5 +180,3 @@ const weatherQuery = (params: WeatherQueryParams = {}) => {
     },
   });
 };
-
-export default weatherQuery;

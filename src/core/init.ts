@@ -4,37 +4,42 @@ import i18next from "i18next";
 import { use } from "react";
 import { initReactI18next } from "react-i18next";
 
-import translations, { DEFAULT_NAMESPACE } from "@/i18n";
-import { languageDetector } from "@/lib/language-detector";
+import {
+  DEFAULT_NAMESPACE,
+  FALLBACK_LANGUAGE,
+  translationResources,
+} from "@/i18n";
 import queryClient, {
-  setupAppFocusManager,
-  setupOnlineManager,
+  setupQueryClientFocusManager,
+  setupQueryClientOnlineManager,
 } from "@/lib/query-client";
-import { loadStoredSettings } from "@/lib/settings";
-import weatherQuery from "@/queries/weather";
+import { resolveLanguage } from "@/lib/resolve-language";
+import { weatherQuery } from "@/queries/weather";
+import { initSettingsStore } from "@/stores/settings";
 import fonts from "@assets/fonts";
 
 const init = async () => {
-  setupOnlineManager();
-  setupAppFocusManager();
+  setupQueryClientOnlineManager();
+  setupQueryClientFocusManager();
 
-  const [settings] = await Promise.all([loadStoredSettings()]);
+  const [settings] = await Promise.all([initSettingsStore()]);
 
   await Promise.all([
     Font.loadAsync({
       ...fonts,
       ...MaterialCommunityIcons.font,
     }),
-    i18next.use(initReactI18next).use(languageDetector).init({
-      resources: translations,
+    i18next.use(initReactI18next).init({
+      resources: translationResources,
       defaultNS: DEFAULT_NAMESPACE,
-      fallbackLng: settings.language,
-      lng: settings.language,
+      fallbackLng: FALLBACK_LANGUAGE,
+      lng: resolveLanguage(settings.language),
+      // apenas para poder escrever em linguagem natural até traduzir tudo depois
+      keySeparator: false,
+      nsSeparator: false,
     }),
     queryClient.prefetchQuery(weatherQuery()),
   ]);
-
-  return { settings };
 };
 
 const initPromise = init();

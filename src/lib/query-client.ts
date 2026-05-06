@@ -7,9 +7,8 @@ import * as Network from "expo-network";
 import { AppState, Platform } from "react-native";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
-const TWENTY_FOUR_HOURS = 1000 * 60 * 60 * 24;
 
-export const setupOnlineManager = () => {
+export const setupQueryClientOnlineManager = () => {
   // ensure queries run when device is online
   onlineManager.setEventListener((setOnline) => {
     // flag to ensure that the initial state is only set once
@@ -34,7 +33,7 @@ export const setupOnlineManager = () => {
   });
 };
 
-export const setupAppFocusManager = () => {
+export const setupQueryClientFocusManager = () => {
   // refetch on app focus
   AppState.addEventListener("change", (status) => {
     if (Platform.OS !== "web") {
@@ -45,7 +44,7 @@ export const setupAppFocusManager = () => {
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { staleTime: FIVE_MINUTES, gcTime: TWENTY_FOUR_HOURS },
+    queries: { staleTime: FIVE_MINUTES, gcTime: Infinity },
   },
 });
 

@@ -5,10 +5,12 @@ import { Suspense, useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 
-import { SettingsProvider } from "@/contexts/settings";
 import { useInit } from "@/core/init";
 import queryClient from "@/lib/query-client";
-import queryClientPersister from "@/lib/query-client-persister";
+import queryClientPersister, {
+  dehydrateOptions,
+} from "@/lib/query-client-persister";
+import { useSettingsStore } from "@/stores/settings";
 import { darkTheme, lightTheme } from "@/styles/theme";
 
 export { ErrorBoundary } from "expo-router";
@@ -20,10 +22,17 @@ export { ErrorBoundary } from "expo-router";
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
-  const { settings } = useInit();
+  useInit();
 
-  const colorScheme = useColorScheme();
-  const theme = colorScheme === "dark" ? darkTheme : lightTheme;
+  const themeMode = useSettingsStore((s) => s.themeMode);
+  const systemScheme = useColorScheme();
+  const resolvedThemeMode =
+    themeMode === "auto"
+      ? systemScheme === "dark"
+        ? "dark"
+        : "light"
+      : themeMode;
+  const theme = resolvedThemeMode === "dark" ? darkTheme : lightTheme;
 
   useEffect(() => {
     SplashScreen.hide();
@@ -32,17 +41,26 @@ const App = () => {
   return (
     <PersistQueryClientProvider
       client={queryClient}
-      persistOptions={{ persister: queryClientPersister }}
+      persistOptions={{ persister: queryClientPersister, dehydrateOptions }}
     >
       <PaperProvider theme={theme}>
-        <SettingsProvider init={settings}>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: theme.colors.background },
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.background },
+          }}
+        >
+          <Stack.Screen
+            name="settings/theme"
+            options={{
+              presentation: "transparentModal",
+              animation: "fade",
+              contentStyle: {
+                backgroundColor: "transparent",
+              },
             }}
           />
-        </SettingsProvider>
+        </Stack>
       </PaperProvider>
     </PersistQueryClientProvider>
   );
