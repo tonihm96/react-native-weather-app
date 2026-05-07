@@ -1,8 +1,8 @@
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import * as SystemUI from "expo-system-ui";
 import { Suspense, useEffect } from "react";
-import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 
 import { useInit } from "@/core/init";
@@ -10,7 +10,7 @@ import queryClient from "@/lib/query-client";
 import queryClientPersister, {
   dehydrateOptions,
 } from "@/lib/query-client-persister";
-import { useSettingsStore } from "@/stores/settings";
+import { useThemeMode } from "@/stores/settings";
 import { darkTheme, lightTheme } from "@/styles/theme";
 
 export { ErrorBoundary } from "expo-router";
@@ -24,15 +24,12 @@ SplashScreen.preventAutoHideAsync();
 const App = () => {
   useInit();
 
-  const themeMode = useSettingsStore((s) => s.themeMode);
-  const systemScheme = useColorScheme();
-  const resolvedThemeMode =
-    themeMode === "auto"
-      ? systemScheme === "dark"
-        ? "dark"
-        : "light"
-      : themeMode;
-  const theme = resolvedThemeMode === "dark" ? darkTheme : lightTheme;
+  const themeMode = useThemeMode();
+  const theme = themeMode === "dark" ? darkTheme : lightTheme;
+
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(theme.colors.background);
+  }, [theme.colors.background]);
 
   useEffect(() => {
     SplashScreen.hide();
