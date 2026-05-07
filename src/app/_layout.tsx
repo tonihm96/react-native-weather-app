@@ -47,8 +47,20 @@ const App = () => {
             contentStyle: { backgroundColor: theme.colors.background },
           }}
         >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="settings/index" />
           <Stack.Screen
             name="settings/theme"
+            options={{
+              presentation: "transparentModal",
+              animation: "fade",
+              contentStyle: {
+                backgroundColor: "transparent",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="settings/language"
             options={{
               presentation: "transparentModal",
               animation: "fade",
