@@ -7,6 +7,7 @@ import { TranslationResourcesLanguage } from "@/i18n";
 import { resolveLanguage } from "@/lib/resolve-language";
 import { waitForStoreHydration } from "@/utils/wait-for-store-hydration";
 import { FontFamily } from "@assets/fonts";
+import { useColorScheme } from "react-native";
 
 //#region Tipos
 export type ThemeMode = "light" | "dark" | "auto";
@@ -126,6 +127,17 @@ export const useSettingsStore = create<Settings>()(
 export const initSettingsStore = async () => {
   const settings = await waitForStoreHydration(useSettingsStore);
   return settings;
+};
+
+export const useThemeMode = () => {
+  const themeMode = useSettingsStore((s) => s.themeMode);
+  const systemScheme = useColorScheme();
+
+  if (themeMode === "auto") {
+    return systemScheme === "dark" ? "dark" : "light";
+  }
+
+  return themeMode;
 };
 
 //#region Actions
