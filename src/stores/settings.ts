@@ -1,12 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18next from "i18next";
+import { useColorScheme } from "react-native";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import { TranslationResourcesLanguage } from "@/i18n";
 import { resolveLanguage } from "@/lib/resolve-language";
 import { waitForStoreHydration } from "@/utils/wait-for-store-hydration";
-import { useColorScheme } from "react-native";
 
 //#region Tipos
 export type ThemeMode = "light" | "dark" | "auto";
