@@ -67,6 +67,10 @@ const App = () => {
             name="settings/time-format"
             options={DIALOG_SCREEN_OPTIONS}
           />
+          <Stack.Screen
+            name="settings/first-day-of-week"
+            options={DIALOG_SCREEN_OPTIONS}
+          />
         </Stack>
       </PaperProvider>
     </PersistQueryClientProvider>
