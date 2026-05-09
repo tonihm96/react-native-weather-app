@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import { Icon, IconButton } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +9,6 @@ import WeatherIcon from "@/components/WeatherIcon";
 import { weatherQuery } from "@/queries/weather";
 import { useSettingsStore } from "@/stores/settings";
 import { sizes } from "@/styles/sizes";
-import { router } from "expo-router";
 
 const MOCK_LOCATION_NAME = "Joaçaba";
 
