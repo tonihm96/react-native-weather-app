@@ -71,6 +71,14 @@ const App = () => {
             name="settings/first-day-of-week"
             options={DIALOG_SCREEN_OPTIONS}
           />
+          <Stack.Screen
+            name="settings/temperature-unit"
+            options={DIALOG_SCREEN_OPTIONS}
+          />
+          <Stack.Screen
+            name="settings/wind-speed-unit"
+            options={DIALOG_SCREEN_OPTIONS}
+          />
         </Stack>
       </PaperProvider>
     </PersistQueryClientProvider>

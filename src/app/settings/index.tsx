@@ -48,8 +48,14 @@ const SettingsScreen = () => {
         onPress={() => router.navigate("/settings/first-day-of-week")}
       />
       <List.Subheader>{t("Unidades")}</List.Subheader>
-      <List.Item title={t("Unidade de temperatura")} />
-      <List.Item title={t("Velocidade do vento")} />
+      <List.Item
+        title={t("Unidade de temperatura")}
+        onPress={() => router.navigate("/settings/temperature-unit")}
+      />
+      <List.Item
+        title={t("Velocidade do vento")}
+        onPress={() => router.navigate("/settings/wind-speed-unit")}
+      />
       <List.Item title={t("Precipitação")} />
       <List.Item title={t("Pressão atmosférica")} />
       <List.Subheader>{t("Sobre")}</List.Subheader>
