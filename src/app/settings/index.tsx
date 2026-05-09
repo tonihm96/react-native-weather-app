@@ -40,7 +40,7 @@ const SettingsScreen = () => {
         onPress={() => router.navigate("/settings/language")}
       />
       <List.Item
-        title={t("Formato de data/hora")}
+        title={t("Formato de hora")}
         onPress={() => router.navigate("/settings/time-format")}
       />
       <List.Item
