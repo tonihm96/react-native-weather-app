@@ -1,9 +1,10 @@
-import { setUseCurrentLocation, useSettingsStore } from "@/stores/settings";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
 import { List, Switch } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { setUseCurrentLocation, useSettingsStore } from "@/stores/settings";
 
 const SettingsScreen = () => {
   const insets = useSafeAreaInsets();
