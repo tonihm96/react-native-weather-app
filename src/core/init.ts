@@ -15,14 +15,14 @@ import queryClient, {
 } from "@/lib/query-client";
 import { resolveLanguage } from "@/lib/resolve-language";
 import { weatherQuery } from "@/queries/weather";
-import { initSettingsStore } from "@/stores/settings";
+import { hydrateSettingsStore } from "@/stores/settings";
 import fonts from "@assets/fonts";
 
 const init = async () => {
   setupQueryClientOnlineManager();
   setupQueryClientFocusManager();
 
-  const [settings] = await Promise.all([initSettingsStore()]);
+  const [settings] = await Promise.all([hydrateSettingsStore()]);
 
   await Promise.all([
     Font.loadAsync({

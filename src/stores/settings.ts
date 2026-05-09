@@ -124,7 +124,7 @@ export const useSettingsStore = create<Settings>()(
   }),
 );
 
-export const initSettingsStore = async () => {
+export const hydrateSettingsStore = async () => {
   const settings = await waitForStoreHydration(useSettingsStore);
   return settings;
 };
