@@ -28,6 +28,7 @@ const SettingsScreen = () => {
             onChange={() => setUseCurrentLocation(!useCurrentLocation)}
           />
         )}
+        onPress={() => setUseCurrentLocation(!useCurrentLocation)}
       />
       <List.Subheader>{t("Aparência")}</List.Subheader>
       <List.Item
