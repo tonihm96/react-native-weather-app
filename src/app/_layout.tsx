@@ -79,6 +79,14 @@ const App = () => {
             name="settings/wind-speed-unit"
             options={DIALOG_SCREEN_OPTIONS}
           />
+          <Stack.Screen
+            name="settings/precipitation-unit"
+            options={DIALOG_SCREEN_OPTIONS}
+          />
+          <Stack.Screen
+            name="settings/pressure-unit"
+            options={DIALOG_SCREEN_OPTIONS}
+          />
         </Stack>
       </PaperProvider>
     </PersistQueryClientProvider>
