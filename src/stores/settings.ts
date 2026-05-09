@@ -6,7 +6,6 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { TranslationResourcesLanguage } from "@/i18n";
 import { resolveLanguage } from "@/lib/resolve-language";
 import { waitForStoreHydration } from "@/utils/wait-for-store-hydration";
-import { FontFamily } from "@assets/fonts";
 import { useColorScheme } from "react-native";
 
 //#region Tipos
@@ -59,7 +58,6 @@ export interface Location {
 export interface Settings {
   // Aparência
   themeMode: ThemeMode;
-  fontFamily: FontFamily;
 
   // Idioma
   language: TranslationLanguage;
@@ -91,7 +89,6 @@ const SETTINGS_STORAGE_KEY = "SETTINGS_STORAGE_KEY" as const;
 const DEFAULT_SETTINGS = Object.freeze<Settings>({
   // Aparência
   themeMode: "auto",
-  fontFamily: "DMSans",
 
   // Idioma
   language: "auto",
@@ -143,10 +140,6 @@ export const useThemeMode = () => {
 //#region Actions
 export const setThemeMode = (themeMode: ThemeMode) => {
   useSettingsStore.setState({ themeMode });
-};
-
-export const setFontFamily = (fontFamily: FontFamily) => {
-  useSettingsStore.setState({ fontFamily });
 };
 
 export const setLanguage = (language: TranslationLanguage) => {
