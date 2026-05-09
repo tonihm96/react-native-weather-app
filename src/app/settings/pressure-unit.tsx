@@ -32,7 +32,7 @@ const PressureUnitScreen = () => {
 
   return (
     <Dialog visible onDismiss={onDismiss}>
-      <Dialog.Title>{t("Primeiro dia da semana")}</Dialog.Title>
+      <Dialog.Title>{t("Pressão atmosférica")}</Dialog.Title>
       <Dialog.Content>
         <RadioButton.Group
           value={newPressureUnit}
