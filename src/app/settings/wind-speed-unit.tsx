@@ -32,7 +32,7 @@ const WindSpeedUnitScreen = () => {
 
   return (
     <Dialog visible onDismiss={onDismiss}>
-      <Dialog.Title>{t("Primeiro dia da semana")}</Dialog.Title>
+      <Dialog.Title>{t("Velocidade do vento")}</Dialog.Title>
       <Dialog.Content>
         <RadioButton.Group
           value={newWindSpeedUnit}
