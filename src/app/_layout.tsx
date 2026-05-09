@@ -63,6 +63,10 @@ const App = () => {
             name="settings/language"
             options={DIALOG_SCREEN_OPTIONS}
           />
+          <Stack.Screen
+            name="settings/time-format"
+            options={DIALOG_SCREEN_OPTIONS}
+          />
         </Stack>
       </PaperProvider>
     </PersistQueryClientProvider>
