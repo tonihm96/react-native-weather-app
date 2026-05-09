@@ -34,7 +34,6 @@ const SettingsScreen = () => {
         title={t("Tema")}
         onPress={() => router.navigate("/settings/theme")}
       />
-      <List.Item title={t("Fonte")} />
       <List.Subheader>{t("Localização")}</List.Subheader>
       <List.Item
         title={t("Idioma")}
