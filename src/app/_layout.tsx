@@ -1,3 +1,4 @@
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -20,6 +21,14 @@ export { ErrorBoundary } from "expo-router";
 // };
 
 SplashScreen.preventAutoHideAsync();
+
+const DIALOG_SCREEN_OPTIONS: NativeStackNavigationOptions = {
+  presentation: "transparentModal",
+  animation: "fade",
+  contentStyle: {
+    backgroundColor: "transparent",
+  },
+};
 
 const App = () => {
   useInit();
@@ -49,25 +58,10 @@ const App = () => {
         >
           <Stack.Screen name="index" />
           <Stack.Screen name="settings/index" />
-          <Stack.Screen
-            name="settings/theme"
-            options={{
-              presentation: "transparentModal",
-              animation: "fade",
-              contentStyle: {
-                backgroundColor: "transparent",
-              },
-            }}
-          />
+          <Stack.Screen name="settings/theme" options={DIALOG_SCREEN_OPTIONS} />
           <Stack.Screen
             name="settings/language"
-            options={{
-              presentation: "transparentModal",
-              animation: "fade",
-              contentStyle: {
-                backgroundColor: "transparent",
-              },
-            }}
+            options={DIALOG_SCREEN_OPTIONS}
           />
         </Stack>
       </PaperProvider>
