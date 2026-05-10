@@ -44,10 +44,6 @@ const SettingsScreen = () => {
         title={t("Formato de hora")}
         onPress={() => router.navigate("/settings/time-format")}
       />
-      <List.Item
-        title={t("Primeiro dia da semana")}
-        onPress={() => router.navigate("/settings/first-day-of-week")}
-      />
       <List.Subheader>{t("Unidades")}</List.Subheader>
       <List.Item
         title={t("Unidade de temperatura")}

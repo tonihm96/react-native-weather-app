@@ -23,8 +23,6 @@ export type PressureUnit = "hPa" | "inHg" | "mmHg";
 
 export type TimeFormat = "12h" | "24h";
 
-export type FirstDayOfWeek = "sunday" | "monday";
-
 export type LocationSortMode = "manual" | "name" | "createdAt";
 
 export interface Location {
@@ -68,7 +66,6 @@ export interface Settings {
   precipitationUnit: PrecipitationUnit;
   pressureUnit: PressureUnit;
   timeFormat: TimeFormat;
-  firstDayOfWeek: FirstDayOfWeek;
 
   // Localização
   savedLocations: Location[];
@@ -99,7 +96,6 @@ const DEFAULT_SETTINGS = Object.freeze<Settings>({
   precipitationUnit: "mm",
   pressureUnit: "hPa", // só client-side
   timeFormat: "24h",
-  firstDayOfWeek: "sunday",
 
   // Localização
   savedLocations: [],
@@ -165,10 +161,6 @@ export const setPressureUnit = (pressureUnit: PressureUnit) => {
 
 export const setTimeFormat = (timeFormat: TimeFormat) => {
   useSettingsStore.setState({ timeFormat });
-};
-
-export const setFirstDayOfWeek = (firstDayOfWeek: FirstDayOfWeek) => {
-  useSettingsStore.setState({ firstDayOfWeek });
 };
 
 export const setSavedLocations = (savedLocations: Location[]) => {
