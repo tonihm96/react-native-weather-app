@@ -79,9 +79,12 @@ const ForecastScreen = () => {
           showsHorizontalScrollIndicator={false}
         >
           {weather?.hourly.map((h) => (
-            <View key={h.time.toISOString()} style={{ alignItems: "center" }}>
+            <View
+              key={new Date(h.time).toISOString()}
+              style={{ alignItems: "center" }}
+            >
               <Text>
-                {h.time.toLocaleTimeString([], {
+                {new Date(h.time).toLocaleTimeString([], {
                   hour: "numeric",
                   hourCycle: "h12",
                 })}
@@ -100,7 +103,7 @@ const ForecastScreen = () => {
         </ScrollView>
         {weather?.daily.map((d) => (
           <View
-            key={d.time.toISOString()}
+            key={new Date(d.time).toISOString()}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -108,7 +111,7 @@ const ForecastScreen = () => {
             }}
           >
             <Text>
-              {d.time.toLocaleDateString([], {
+              {new Date(d.time).toLocaleDateString([], {
                 weekday: "short",
                 day: "numeric",
               })}
