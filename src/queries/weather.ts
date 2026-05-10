@@ -1,14 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import weatherApi from "@/services/weather";
-import {
-  PrecipitationUnit,
-  TemperatureUnit,
-  Timeformat,
-  Timezone,
-  WeatherAPIParams,
-  WindSpeedUnit,
-} from "@/types/weather/params";
+import { Timezone, WeatherAPIParams } from "@/types/weather/params";
 import {
   CurrentWeather,
   DailyForecast,
@@ -17,14 +10,15 @@ import {
 } from "@/types/weather/response";
 
 export interface WeatherQueryParams {
-  latitude?: number; // change to required prop later
-  longitude?: number; // change to required prop later
+  latitude: number;
+  longitude: number;
   timezone?: Timezone;
-  temperature_unit?: TemperatureUnit;
-  wind_speed_unit?: WindSpeedUnit;
-  precipitation_unit?: PrecipitationUnit;
-  timeformat?: Timeformat;
 }
+
+const PRECIPITATION_UNIT = "mm";
+const TEMPERATURE_UNIT = "celsius";
+const TIME_FORMAT = "iso8601";
+const WIND_SPEED_UNIT = "kmh";
 
 const parseWeather = (data: WeatherAPIResponse) => {
   return {
@@ -97,33 +91,18 @@ const weatherQueryKey = (params: WeatherQueryParams) => {
   return ["forecast", params] as const;
 };
 
-const MOCK_COORDINATES = {
-  latitude: -27.148023994688298,
-  longitude: -51.48305952442542,
-};
-
-export const weatherQuery = (params: WeatherQueryParams = {}) => {
+export const weatherQuery = (params: WeatherQueryParams) => {
   return queryOptions({
     queryKey: weatherQueryKey(params),
     queryFn: async () => {
-      console.log("running main weather query");
-
-      const {
-        latitude = MOCK_COORDINATES.latitude,
-        longitude = MOCK_COORDINATES.longitude,
-        precipitation_unit = "mm",
-        temperature_unit = "celsius",
-        timeformat = "iso8601",
-        timezone = "auto",
-        wind_speed_unit = "kmh",
-      } = params;
+      const { latitude, longitude, timezone = "auto" } = params;
 
       const weatherApiParams: WeatherAPIParams = {
         timezone,
-        temperature_unit,
-        wind_speed_unit,
-        precipitation_unit,
-        timeformat,
+        temperature_unit: TEMPERATURE_UNIT,
+        wind_speed_unit: WIND_SPEED_UNIT,
+        precipitation_unit: PRECIPITATION_UNIT,
+        timeformat: TIME_FORMAT,
         latitude,
         longitude,
         past_hours: 24, // max: 24
@@ -168,9 +147,6 @@ export const weatherQuery = (params: WeatherQueryParams = {}) => {
         ],
       };
 
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // return parseWeather(weatherMock);
       const { data: weather } = await weatherApi.get<WeatherAPIResponse>(
         "/forecast",
         { params: weatherApiParams },
