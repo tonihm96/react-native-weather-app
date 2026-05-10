@@ -7,50 +7,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Text from "@/components/Text";
 import WeatherIcon from "@/components/WeatherIcon";
 import { weatherQuery } from "@/queries/weather";
-import { useSettingsStore } from "@/stores/settings";
 import { sizes } from "@/styles/sizes";
 
 const MOCK_LOCATION_NAME = "Joaçaba";
 
-const ForecastScreen = () => {
-  const precipitationUnit = useSettingsStore((s) => s.precipitationUnit);
-  const windSpeedUnit = useSettingsStore((s) => s.windSpeedUnit);
-  const temperatureUnit = useSettingsStore((s) => s.temperatureUnit);
+const MOCK_COORDINATES = {
+  latitude: -27.148023994688298,
+  longitude: -51.48305952442542,
+};
 
+const ForecastScreen = () => {
   const {
     data: weather,
     refetch: refetchWeather,
     isRefetching: isRefetchingWeather,
   } = useQuery(
     weatherQuery({
-      precipitation_unit: precipitationUnit,
-      wind_speed_unit: windSpeedUnit,
-      temperature_unit: temperatureUnit,
+      ...MOCK_COORDINATES,
     }),
   );
-
-  const hourlyTimes = weather?.hourly.map((h) => h.time.getTime()) ?? [];
-  const dailyTimes = weather?.daily.map((d) => d.time.getTime()) ?? [];
-
-  const maxHourlyDate = Math.max(...hourlyTimes);
-  const minHourlyDate = Math.min(...hourlyTimes);
-
-  const maxDailyDate = Math.max(...dailyTimes);
-  const minDailyDate = Math.min(...dailyTimes);
-
-  const maxHourly = new Date(maxHourlyDate);
-  const minHourly = new Date(minHourlyDate);
-  const maxDaily = new Date(maxDailyDate);
-  const minDaily = new Date(minDailyDate);
-
-  console.log({
-    hourlyTimesLength: hourlyTimes.length,
-    dailyTimesLength: dailyTimes.length,
-    maxHourly,
-    minHourly,
-    maxDaily,
-    minDaily,
-  });
 
   return (
     <>
