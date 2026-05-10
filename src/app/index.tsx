@@ -81,7 +81,6 @@ const ForecastScreen = () => {
           {weather?.hourly.map((h) => (
             <View key={h.time.toISOString()} style={{ alignItems: "center" }}>
               <Text>
-                {/* format time as 1AM, 2AM, Now */}
                 {h.time.toLocaleTimeString([], {
                   hour: "numeric",
                   hourCycle: "h12",
