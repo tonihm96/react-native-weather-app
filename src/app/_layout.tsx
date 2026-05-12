@@ -68,10 +68,6 @@ const App = () => {
             options={DIALOG_SCREEN_OPTIONS}
           />
           <Stack.Screen
-            name="settings/first-day-of-week"
-            options={DIALOG_SCREEN_OPTIONS}
-          />
-          <Stack.Screen
             name="settings/temperature-unit"
             options={DIALOG_SCREEN_OPTIONS}
           />
