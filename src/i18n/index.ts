@@ -7,7 +7,7 @@ export type TranslationResourcesLanguage = keyof typeof translationResources;
 export type TranslationResources = typeof ptBR;
 
 export const DEFAULT_NAMESPACE =
-  "globais" as const satisfies keyof TranslationResources;
+  "globals" as const satisfies keyof TranslationResources;
 
 export const FALLBACK_LANGUAGE =
   "pt-BR" as const satisfies TranslationResourcesLanguage;
