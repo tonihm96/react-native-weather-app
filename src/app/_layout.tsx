@@ -1,9 +1,8 @@
-import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
-import { Suspense, useEffect } from "react";
+import { ComponentProps, Suspense, useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 
 import { useInit } from "@/core/init";
@@ -22,7 +21,7 @@ export { ErrorBoundary } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
-const DIALOG_SCREEN_OPTIONS: NativeStackNavigationOptions = {
+const DIALOG_SCREEN_OPTIONS: ComponentProps<typeof Stack>["screenOptions"] = {
   presentation: "transparentModal",
   animation: "fade",
   contentStyle: {
