@@ -9,12 +9,11 @@ import {
   FALLBACK_LANGUAGE,
   translationResources,
 } from "@/i18n";
-import queryClient, {
+import {
   setupQueryClientFocusManager,
   setupQueryClientOnlineManager,
 } from "@/lib/query-client";
 import { resolveLanguage } from "@/lib/resolve-language";
-import { weatherQuery } from "@/queries/weather";
 import { hydrateSettingsStore } from "@/stores/settings";
 import fonts from "@assets/fonts";
 
@@ -38,7 +37,7 @@ const init = async () => {
       keySeparator: false,
       nsSeparator: false,
     }),
-    queryClient.prefetchQuery(weatherQuery()),
+    // queryClient.prefetchQuery(weatherQueries.forecast()),
   ]);
 };
 

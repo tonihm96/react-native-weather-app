@@ -126,3 +126,71 @@ export const weatherQuery = (params: WeatherQueryParams) => {
     },
   });
 };
+
+export const weatherQueries = {
+  all: () => ["weather"] as const,
+  forecast: (params: WeatherQueryParams) =>
+    queryOptions({
+      queryKey: [...weatherQueries.all(), "forecast", params],
+      queryFn: async () => {
+        const { latitude, longitude, timezone = "auto" } = params;
+
+        const weatherApiParams: WeatherAPIParams = {
+          timezone,
+          temperature_unit: TEMPERATURE_UNIT,
+          wind_speed_unit: WIND_SPEED_UNIT,
+          precipitation_unit: PRECIPITATION_UNIT,
+          timeformat: TIME_FORMAT,
+          latitude,
+          longitude,
+          past_hours: 24, // max: 24
+          forecast_hours: 24, // max: 24
+          past_days: 1,
+          forecast_days: 7,
+          current: [
+            "temperature_2m",
+            "apparent_temperature",
+            "weather_code",
+            "relative_humidity_2m",
+            "cloud_cover",
+            "wind_speed_10m",
+            "wind_direction_10m",
+            "wind_gusts_10m",
+            "rain",
+            "precipitation",
+            "pressure_msl",
+            "is_day",
+          ],
+          hourly: [
+            "temperature_2m",
+            "weather_code",
+            "precipitation_probability",
+            "precipitation",
+            "apparent_temperature",
+            "is_day",
+            "wind_speed_10m",
+            "visibility",
+          ],
+          daily: [
+            "weather_code",
+            "temperature_2m_max",
+            "temperature_2m_min",
+            "precipitation_sum",
+            "precipitation_probability_max",
+            "wind_speed_10m_max",
+            "wind_gusts_10m_max",
+            "sunrise",
+            "sunset",
+            "uv_index_max",
+          ],
+        };
+
+        const { data: weather } = await weatherApi.get<WeatherAPIResponse>(
+          "/forecast",
+          { params: weatherApiParams },
+        );
+
+        return parseWeather(weather);
+      },
+    }),
+};

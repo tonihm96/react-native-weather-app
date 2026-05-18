@@ -1,36 +1,92 @@
 import { useQuery } from "@tanstack/react-query";
-import { router } from "expo-router";
-import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
+import { Redirect } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { Drawer } from "react-native-drawer-layout";
 import { Icon, IconButton } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Text from "@/components/Text";
 import WeatherIcon from "@/components/WeatherIcon";
-import { weatherQuery } from "@/queries/weather";
+import {
+  useCurrentCoordinates,
+  useCurrentLocationName,
+} from "@/features/location/useCurrentCoordinates";
+import DrawerContent from "@/features/locations/DrawerContent";
+import { weatherQueries } from "@/features/weather/queries";
+import { useSettingsStore } from "@/stores/settings";
 import { sizes } from "@/styles/sizes";
 
-const MOCK_LOCATION_NAME = "Joaçaba";
-
-const MOCK_COORDINATES = {
-  latitude: -27.148023994688298,
-  longitude: -51.48305952442542,
-};
-
 const ForecastScreen = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const savedLocations = useSettingsStore((s) => s.savedLocations);
+  const selectedLocationId = useSettingsStore((s) => s.selectedLocationId);
+  const useCurrentLocation = useSettingsStore((s) => s.useCurrentLocation);
+
+  const hasSetup = savedLocations.length > 0 || useCurrentLocation;
+
+  const needsGPS = useCurrentLocation && selectedLocationId === null;
+
+  const selectedLocation =
+    selectedLocationId !== null
+      ? savedLocations.find((l) => l.id === selectedLocationId)
+      : null;
+  const activeLocation = needsGPS ? null : (selectedLocation ?? savedLocations[0] ?? null);
+
+  const { data: gpsCoords } = useCurrentCoordinates(needsGPS);
+  const { data: gpsLocationName } = useCurrentLocationName(
+    needsGPS ? gpsCoords : undefined,
+  );
+
+  const locationName = needsGPS
+    ? (gpsLocationName ?? "Localização atual")
+    : (activeLocation?.name ?? "—");
+
+  const coordinates = needsGPS
+    ? gpsCoords
+    : activeLocation
+      ? { latitude: activeLocation.lat, longitude: activeLocation.lng }
+      : null;
+
   const {
     data: weather,
     refetch: refetchWeather,
     isRefetching: isRefetchingWeather,
-  } = useQuery(
-    weatherQuery({
-      ...MOCK_COORDINATES,
-    }),
-  );
+  } = useQuery({
+    ...weatherQueries.forecast(coordinates ?? { latitude: 0, longitude: 0 }),
+    enabled: !!coordinates,
+  });
+
+  if (!hasSetup) {
+    return <Redirect href="/onboarding/welcome" />;
+  }
+
+  if (needsGPS && !gpsCoords) {
+    return (
+      <SafeAreaView style={styles.centered}>
+        <ActivityIndicator size="large" />
+      </SafeAreaView>
+    );
+  }
 
   return (
-    <>
+    <Drawer
+      open={drawerOpen}
+      onOpen={() => setDrawerOpen(true)}
+      onClose={() => setDrawerOpen(false)}
+      renderDrawerContent={() => (
+        <DrawerContent onClose={() => setDrawerOpen(false)} />
+      )}
+    >
       <SafeAreaView>
-        <IconButton icon="cog" onPress={() => router.push("/settings")} />
+        <IconButton icon="menu" onPress={() => setDrawerOpen(true)} />
       </SafeAreaView>
 
       <ScrollView
@@ -46,7 +102,7 @@ const ForecastScreen = () => {
           style={{ flexDirection: "row", alignItems: "center", gap: sizes.xs }}
         >
           <Icon source="map-marker" size={sizes.lg} />
-          <Text>{MOCK_LOCATION_NAME}</Text>
+          <Text>{locationName}</Text>
         </View>
 
         <View
@@ -101,6 +157,7 @@ const ForecastScreen = () => {
             </View>
           ))}
         </ScrollView>
+
         {weather?.daily.map((d) => (
           <View
             key={new Date(d.time).toISOString()}
@@ -132,14 +189,13 @@ const ForecastScreen = () => {
           </View>
         ))}
       </ScrollView>
-    </>
+    </Drawer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
+  centered: { flex: 1, alignItems: "center", justifyContent: "center" },
 });
 
 export default ForecastScreen;

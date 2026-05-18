@@ -46,9 +46,9 @@ const RefreshControl = ({
   return (
     <RNRefreshControl
       progressBackgroundColor={
-        progressBackgroundColor || theme.colors.elevation.level3
+        progressBackgroundColor ?? theme.colors.elevation.level3
       }
-      colors={colors || [theme.colors.primary]}
+      colors={colors ?? [theme.colors.primary]}
       {...props}
     />
   );

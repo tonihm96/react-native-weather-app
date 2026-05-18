@@ -82,6 +82,8 @@ const App = () => {
             name="settings/pressure-unit"
             options={DIALOG_SCREEN_OPTIONS}
           />
+          <Stack.Screen name="location-search" />
+          <Stack.Screen name="onboarding/welcome" />
         </Stack>
       </PaperProvider>
     </PersistQueryClientProvider>

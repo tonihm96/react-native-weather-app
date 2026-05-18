@@ -13,13 +13,14 @@ import {
   useTheme,
 } from "react-native-paper";
 
+import { sizes } from "@/styles/sizes";
 import Text from "./Text";
 
 type IconProp = PaperSnackbarProps["icon"];
 
 /** Dados de uma mensagem a ser exibida na fila do Snackbar. */
 export interface SnackbarMessage {
-  /** Texto da mensagem a exibir. */
+  /** Conteúdo da mensagem. */
   message: string;
   /** Duração em ms. Padrão: `Snackbar.DURATION_SHORT`. */
   duration?: number;
@@ -63,6 +64,10 @@ const SNACKBAR_HEIGHT = 48;
 const SNACKBAR_ICON_BUTTON_SIZE = 48;
 /** Duração da animação de saída em ms, aguardada antes de avançar a fila. */
 const SNACKBAR_FADE_OUT_DURATION_IN_MS = 200;
+
+const DEFAULT_MESSAGE_PROPS: Partial<SnackbarMessage> = {
+  marginHorizontal: sizes.md,
+};
 
 /**
  * Snackbar com fila de mensagens controlado por `ref` imperativa.
@@ -110,7 +115,9 @@ const Snackbar = ({ ref }: SnackbarProps) => {
     fadeOutTimeout.current = setTimeout(() => {
       setQueue((prev) => {
         const next = prev.slice(1);
-        if (next.length > 0) setVisible(true);
+        if (next.length > 0) {
+          setVisible(true);
+        }
         return next;
       });
     }, SNACKBAR_FADE_OUT_DURATION_IN_MS);
@@ -120,11 +127,15 @@ const Snackbar = ({ ref }: SnackbarProps) => {
     ref,
     () => ({
       enqueue: (message) => {
-        const item: SnackbarMessage =
-          typeof message === "string" ? { message } : message;
+        const item =
+          typeof message === "string"
+            ? { ...DEFAULT_MESSAGE_PROPS, message }
+            : { ...DEFAULT_MESSAGE_PROPS, ...message };
         setQueue((prev) => {
           // se a fila estava vazia, mostra imediatamente
-          if (prev.length === 0) setVisible(true);
+          if (prev.length === 0) {
+            setVisible(true);
+          }
           return [...prev, item];
         });
       },
